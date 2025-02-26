@@ -68,5 +68,23 @@
             </column>
         </createTable>
     </changeSet>
+    
+    <changeSet id="Alter Games table developer column to FK" author="Stephen Coyle">
+        <renameColumn tableName="Games" oldColumnName="developer" newColumnName="developerId" columnDataType="INT"/>
+        <addForeignKeyConstraint baseTableName="Games" baseColumnNames="developerId" constraintName="fk_developerId"
+                                 referencedTableName="Developers" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="Alter Games table publisher column to FK" author="Stephen Coyle">
+        <renameColumn tableName="Games" oldColumnName="publisher" newColumnName="publisherId" columnDataType="INT"/>
+        <addForeignKeyConstraint baseTableName="Games" baseColumnNames="publisherId" constraintName="fk_publisherId"
+                                 referencedTableName="Publishers" referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="Create Games index on uuid" author="Stephen Coyle">
+        <createIndex tableName="Games" indexName="idx_games_uuid">
+            <column name="uuid" type="VARCHAR(32)"/>
+        </createIndex>
+    </changeSet>
 
 </databaseChangeLog>
