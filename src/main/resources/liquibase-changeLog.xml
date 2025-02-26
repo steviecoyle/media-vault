@@ -41,4 +41,18 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="Create Developers Table" author="Stephen Coyle">
+        <createTable tableName="Developers">
+            <column type="INT" name="id">
+                <constraints primaryKey="true"/>
+            </column>
+            <column type="VARCHAR(50)" name="name">
+                <constraints nullable="false" />
+            </column>
+            <column type="VARCHAR(100)" name="country">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
