@@ -4,7 +4,10 @@ import com.scoyle.media_vault.persistence.entity.GameEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface GameRepository extends JpaRepository<GameEntity, Long> {
+import java.util.Optional;
 
+@Repository
+public interface GamesRepository extends JpaRepository<GameEntity, Long> {
+
+    Optional<GameEntity> findGameByUuid(String uuid);
 }
