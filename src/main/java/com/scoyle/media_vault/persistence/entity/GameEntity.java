@@ -19,8 +19,15 @@ public class GameEntity {
     private Long id;
     private String uuid;
     private String title;
-    private String developer;
-    private String publisher;
+
+    @ManyToOne
+    @JoinColumn(name = "developerId")
+    private DevelopersEntity developer;
+
+    @ManyToOne
+    @JoinColumn(name = "publisherId")
+    private PublishersEntity publisher;
+
     private Date releaseDate;
     private String platform;
     private String genre;
