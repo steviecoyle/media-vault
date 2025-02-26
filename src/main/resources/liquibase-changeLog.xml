@@ -1,0 +1,44 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="Create Games Table" author="Stephen Coyle">
+        <createTable tableName="Games">
+            <column type="INT" name="id">
+                <constraints primaryKey="true"/>
+            </column>
+            <column type="VARCHAR(32)" name="uuid">
+                <constraints nullable="false" />
+            </column>
+            <column type="VARCHAR(255)" name="title">
+                <constraints nullable="false" />
+            </column>
+            <column type="VARCHAR(100)" name="developer">
+                <constraints nullable="false" />
+            </column>
+            <column type="VARCHAR(100)" name="publisher">
+                <constraints nullable="false" />
+            </column>
+            <column type="DATE" name="releaseDate">
+                <constraints nullable="false" />
+            </column>
+            <column type="VARCHAR(50)" name="platform">
+                <constraints nullable="false" />
+            </column>
+            <column type="VARCHAR(50)" name="genre">
+                <constraints nullable="false" />
+            </column>
+            <column type="TEXT" name="description">
+                <constraints nullable="false" />
+            </column>
+            <column type="DOUBLE" name="rating">
+                <constraints nullable="true" />
+            </column>
+            <column type="TEXT" name="coverArtLink">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
