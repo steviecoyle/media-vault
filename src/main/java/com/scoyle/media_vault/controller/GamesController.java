@@ -38,15 +38,15 @@ public class GamesController {
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<GameEntity> getGameById(@PathVariable String uuid) {
+    public ResponseEntity<GameEntity> getGameByUuid(@PathVariable String uuid) {
         log.info("GET /{uuid}");
 
         return new ResponseEntity<>(gameService.getGameByUuid(uuid), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateGameById(@PathVariable String id, @RequestBody UpdateGameRequest game) {
-        log.info("PUT /{id}");
+    @PutMapping("/{uuid}")
+    public ResponseEntity<String> updateGameByUuid(@PathVariable String uuid, @RequestBody UpdateGameRequest game) {
+        log.info("PUT /{uuid}");
 
         return new ResponseEntity<>("", HttpStatus.CREATED);
     }

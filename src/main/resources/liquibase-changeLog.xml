@@ -87,4 +87,9 @@
         </createIndex>
     </changeSet>
 
+    <changeSet id="Drop country column from dev and publisher tables" author="Stephen Coyle">
+        <dropColumn tableName="Developers" columnName="country"/>
+        <dropColumn tableName="Publishers" columnName="country"/>
+    </changeSet>
+
 </databaseChangeLog>

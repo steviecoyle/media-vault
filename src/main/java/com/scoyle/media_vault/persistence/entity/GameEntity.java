@@ -1,5 +1,6 @@
 package com.scoyle.media_vault.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class GameEntity {
     @JoinColumn(name = "publisherId")
     private PublishersEntity publisher;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
     private String platform;
     private String genre;
