@@ -1,20 +1,24 @@
 package com.scoyle.media_vault.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class UpdateGameRequest {
+public class UpdateGameRequest implements Serializable {
 
-    private Long id;
+    private String uuid;
     private String title;
     private String developer;
     private String publisher;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
     private String platform;
     private String genre;
