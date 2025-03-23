@@ -10,6 +10,4 @@ import java.util.Optional;
 public interface GamesRepository extends JpaRepository<GameEntity, Long> {
 
     Optional<GameEntity> findGameByUuid(String uuid);
-
-    void deleteGameByUuid(String uuid);
 }
