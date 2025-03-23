@@ -51,8 +51,9 @@ public class GamesController {
         return new ResponseEntity<>(gameService.updateGame(game), HttpStatus.OK);
     }
 
-//    @DeleteMapping("/{uuid}")
-//    public ResponseEntity<String> deleteGameByUuid(@PathVariable String uuid) {
-//        return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
-//    }
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<String> deleteGameByUuid(@PathVariable String uuid) {
+        gameService.deleteGame(uuid);
+        return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+    }
 }
