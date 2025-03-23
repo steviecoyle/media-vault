@@ -1,7 +1,9 @@
 package com.scoyle.media_vault.service.impl;
 
+import com.scoyle.media_vault.exception.ResourceNotFoundException;
 import com.scoyle.media_vault.persistence.entity.GameEntity;
 import com.scoyle.media_vault.persistence.repository.GamesRepository;
+import com.scoyle.media_vault.request.UpdateGameRequest;
 import com.scoyle.media_vault.service.GamesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -16,6 +18,8 @@ import java.util.Optional;
 @Service
 class GamesServiceImpl implements GamesService {
 
+    private static final String NO_GAME_BY_UUID_ERROR_MESSAGE = "No Game by that UUID";
+
     private final GamesRepository repository;
 
     @Override
@@ -25,14 +29,40 @@ class GamesServiceImpl implements GamesService {
     }
 
     @Override
-    public GameEntity getGameByUuid(String uuid) {
+    public GameEntity getGameByUuid(final String uuid) {
         Optional<GameEntity> optionalGame = repository.findGameByUuid(uuid);
 
         if (optionalGame.isPresent()) {
             return optionalGame.get();
         } else {
-            log.error("No Game by that UUID");
-            return new GameEntity();
+            log.error(NO_GAME_BY_UUID_ERROR_MESSAGE);
+            throw new ResourceNotFoundException("Game with UUID of [" + "] not found.");
         }
+    }
+
+    @Override
+    public GameEntity updateGame(UpdateGameRequest updateGameRequest) {
+        Optional<GameEntity> optionalGame = repository.findGameByUuid(updateGameRequest.getUuid());
+
+        if (optionalGame.isPresent()) {
+            // TODO handle call to fetch publisher and developer
+            GameEntity gameEntity = new GameEntity();
+            gameEntity.setDescription(updateGameRequest.getDescription());
+            gameEntity.setCoverArtLink(updateGameRequest.getCoverArt());
+            gameEntity.setTitle(updateGameRequest.getTitle());
+            gameEntity.setGenre(updateGameRequest.getGenre());
+            gameEntity.setRating(updateGameRequest.getRating());
+            gameEntity.setReleaseDate(updateGameRequest.getReleaseDate());
+
+            return repository.save(gameEntity);
+        } else {
+            log.error(NO_GAME_BY_UUID_ERROR_MESSAGE);
+            throw new ResourceNotFoundException("Game with id of [" + "] not found.");
+        }
+    }
+
+    @Override
+    public void deleteGame(final String uuid) {
+        log.info("Deleting Game with UUID of [{}]", uuid);
     }
 }
