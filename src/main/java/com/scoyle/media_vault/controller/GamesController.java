@@ -39,15 +39,20 @@ public class GamesController {
 
     @GetMapping("/{uuid}")
     public ResponseEntity<GameEntity> getGameByUuid(@PathVariable String uuid) {
-        log.info("GET /{uuid}");
+        log.info("GET /games/{uuid}");
 
         return new ResponseEntity<>(gameService.getGameByUuid(uuid), HttpStatus.OK);
     }
 
     @PutMapping("/{uuid}")
-    public ResponseEntity<String> updateGameByUuid(@PathVariable String uuid, @RequestBody UpdateGameRequest game) {
-        log.info("PUT /{uuid}");
+    public ResponseEntity<GameEntity> updateGameByUuid(@PathVariable String uuid, @RequestBody UpdateGameRequest game) {
+        log.info("PUT /games/{uuid}");
 
-        return new ResponseEntity<>("", HttpStatus.CREATED);
+        return new ResponseEntity<>(gameService.updateGame(game), HttpStatus.OK);
     }
+
+//    @DeleteMapping("/{uuid}")
+//    public ResponseEntity<String> deleteGameByUuid(@PathVariable String uuid) {
+//        return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+//    }
 }
