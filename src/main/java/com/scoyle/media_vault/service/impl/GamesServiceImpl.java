@@ -63,6 +63,14 @@ class GamesServiceImpl implements GamesService {
 
     @Override
     public void deleteGame(final String uuid) {
-        log.info("Deleting Game with UUID of [{}]", uuid);
+        Optional<GameEntity> optionalGame = repository.findGameByUuid(uuid);
+
+        if (optionalGame.isPresent()) {
+            log.info("Deleting Game with UUID of [{}]", uuid);
+            repository.deleteGameByUuid(uuid);
+        } else {
+            log.error(NO_GAME_BY_UUID_ERROR_MESSAGE);
+            throw new ResourceNotFoundException("Game with id of [" + "] not found.");
+        }
     }
 }
