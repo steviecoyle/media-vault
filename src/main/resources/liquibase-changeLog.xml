@@ -3,9 +3,31 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
+    <changeSet id="Create Developers Table" author="Stephen Coyle">
+        <createTable tableName="Developers">
+            <column type="BIGINT" name="id" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column type="VARCHAR(50)" name="name">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Create Publishers Table" author="Stephen Coyle">
+        <createTable tableName="Publishers">
+            <column type="BIGINT" name="id" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column type="VARCHAR(50)" name="name">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
     <changeSet id="Create Games Table" author="Stephen Coyle">
         <createTable tableName="Games">
-            <column type="INT" name="id">
+            <column type="BIGINT" name="id" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
             <column type="VARCHAR(32)" name="uuid">
@@ -14,11 +36,11 @@
             <column type="VARCHAR(255)" name="title">
                 <constraints nullable="false" />
             </column>
-            <column type="VARCHAR(100)" name="developer">
-                <constraints nullable="false" />
+            <column type="BIGINT" name="developerId">
+                <constraints nullable="true" />
             </column>
-            <column type="VARCHAR(100)" name="publisher">
-                <constraints nullable="false" />
+            <column type="BIGINT" name="publisherId">
+                <constraints nullable="true" />
             </column>
             <column type="DATE" name="releaseDate">
                 <constraints nullable="false" />
@@ -40,43 +62,13 @@
             </column>
         </createTable>
     </changeSet>
-
-    <changeSet id="Create Developers Table" author="Stephen Coyle">
-        <createTable tableName="Developers">
-            <column type="INT" name="id">
-                <constraints primaryKey="true"/>
-            </column>
-            <column type="VARCHAR(50)" name="name">
-                <constraints nullable="false" />
-            </column>
-            <column type="VARCHAR(100)" name="country">
-                <constraints nullable="false" />
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet id="Create Publishers Table" author="Stephen Coyle">
-        <createTable tableName="Publishers">
-            <column type="INT" name="id">
-                <constraints primaryKey="true"/>
-            </column>
-            <column type="VARCHAR(50)" name="name">
-                <constraints nullable="false" />
-            </column>
-            <column type="VARCHAR(100)" name="country">
-                <constraints nullable="false" />
-            </column>
-        </createTable>
-    </changeSet>
     
     <changeSet id="Alter Games table developer column to FK" author="Stephen Coyle">
-        <renameColumn tableName="Games" oldColumnName="developer" newColumnName="developerId" columnDataType="INT"/>
         <addForeignKeyConstraint baseTableName="Games" baseColumnNames="developerId" constraintName="fk_developerId"
                                  referencedTableName="Developers" referencedColumnNames="id"/>
     </changeSet>
 
     <changeSet id="Alter Games table publisher column to FK" author="Stephen Coyle">
-        <renameColumn tableName="Games" oldColumnName="publisher" newColumnName="publisherId" columnDataType="INT"/>
         <addForeignKeyConstraint baseTableName="Games" baseColumnNames="publisherId" constraintName="fk_publisherId"
                                  referencedTableName="Publishers" referencedColumnNames="id"/>
     </changeSet>
@@ -85,11 +77,6 @@
         <createIndex tableName="Games" indexName="idx_games_uuid">
             <column name="uuid" type="VARCHAR(32)"/>
         </createIndex>
-    </changeSet>
-
-    <changeSet id="Drop country column from dev and publisher tables" author="Stephen Coyle">
-        <dropColumn tableName="Developers" columnName="country"/>
-        <dropColumn tableName="Publishers" columnName="country"/>
     </changeSet>
 
 </databaseChangeLog>
