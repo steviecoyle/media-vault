@@ -21,8 +21,7 @@ class PublisherServiceImpl implements PublisherService {
         PublishersEntity entity = new PublishersEntity();
         entity.setName(request.getName());
 
-        PublishersEntity publisher = repository.save(entity);
-        return publisher;
+        return repository.save(entity);
     }
 
     @Override
@@ -34,9 +33,7 @@ class PublisherServiceImpl implements PublisherService {
             publisherToUpdate.setName(updatePublisherRequest.getName());
             publisherToUpdate.setLastUpdated(null);
 
-            PublishersEntity updatedPublisher = repository.save(publisherToUpdate);
-
-            return updatedPublisher;
+            return repository.save(publisherToUpdate);
         } else {
             return null;
         }
