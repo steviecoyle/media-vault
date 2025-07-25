@@ -3,6 +3,7 @@ package com.scoyle.media_vault.service.impl;
 import com.scoyle.media_vault.exception.ResourceNotFoundException;
 import com.scoyle.media_vault.persistence.entity.GameEntity;
 import com.scoyle.media_vault.persistence.repository.GamesRepository;
+import com.scoyle.media_vault.request.AddGameRequest;
 import com.scoyle.media_vault.request.UpdateGameRequest;
 import com.scoyle.media_vault.service.GamesService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -36,8 +38,23 @@ class GamesServiceImpl implements GamesService {
             return optionalGame.get();
         } else {
             log.error(NO_GAME_BY_UUID_ERROR_MESSAGE);
-            throw new ResourceNotFoundException("Game with UUID of [" + "] not found.");
+            throw new ResourceNotFoundException("Game with UUID of [" + uuid + "] not found.");
         }
+    }
+
+    @Override
+    public GameEntity createGame(AddGameRequest addGameRequest) {
+        GameEntity newGame = new GameEntity();
+        newGame.setTitle(addGameRequest.getTitle());
+        newGame.setDescription(addGameRequest.getDescription());
+        newGame.setGenre(addGameRequest.getGenre());
+        newGame.setRating(addGameRequest.getRating());
+        newGame.setPlatform(addGameRequest.getPlatform());
+        newGame.setReleaseDate(addGameRequest.getReleaseDate());
+        newGame.setCoverArtLink(addGameRequest.getCoverArt());
+        newGame.setUuid(UUID.randomUUID().toString().replace("-", ""));
+
+        return repository.save(newGame);
     }
 
     @Override
