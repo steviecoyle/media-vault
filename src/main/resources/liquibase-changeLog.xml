@@ -87,4 +87,12 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="add column to Developers" author="Stephen">
+        <addColumn tableName="Developers">
+            <column type="TIMESTAMP" name="lastUpdated" defaultValueDate="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
