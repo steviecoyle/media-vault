@@ -6,6 +6,7 @@ import com.scoyle.media_vault.request.CreatePublisherRequest;
 import com.scoyle.media_vault.request.UpdatePublisherRequest;
 import com.scoyle.media_vault.response.PagedResponse;
 import com.scoyle.media_vault.service.PublisherService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -40,10 +41,10 @@ public class PublisherController {
     }
 
     @PostMapping
-    public ResponseEntity<PublishersEntity> savePublisher(@RequestBody CreatePublisherRequest createPublisherRequest) {
+    public ResponseEntity<PublishersEntity> savePublisher(@Valid @RequestBody CreatePublisherRequest createPublisherRequest) {
         log.info("POST /publishers");
 
-        return new ResponseEntity<>(service.savePublisher(createPublisherRequest), HttpStatus.OK);
+        return new ResponseEntity<>(service.savePublisher(createPublisherRequest), HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
