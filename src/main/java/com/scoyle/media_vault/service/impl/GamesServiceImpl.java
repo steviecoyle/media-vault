@@ -3,7 +3,7 @@ package com.scoyle.media_vault.service.impl;
 import com.scoyle.media_vault.exception.ResourceNotFoundException;
 import com.scoyle.media_vault.persistence.entity.GameEntity;
 import com.scoyle.media_vault.persistence.repository.GamesRepository;
-import com.scoyle.media_vault.request.AddGameRequest;
+import com.scoyle.media_vault.request.CreateGameRequest;
 import com.scoyle.media_vault.request.UpdateGameRequest;
 import com.scoyle.media_vault.service.GamesService;
 import lombok.RequiredArgsConstructor;
@@ -43,15 +43,15 @@ class GamesServiceImpl implements GamesService {
     }
 
     @Override
-    public GameEntity createGame(AddGameRequest addGameRequest) {
+    public GameEntity createGame(CreateGameRequest createGameRequest) {
         GameEntity newGame = new GameEntity();
-        newGame.setTitle(addGameRequest.getTitle());
-        newGame.setDescription(addGameRequest.getDescription());
-        newGame.setGenre(addGameRequest.getGenre());
-        newGame.setRating(addGameRequest.getRating());
-        newGame.setPlatform(addGameRequest.getPlatform());
-        newGame.setReleaseDate(addGameRequest.getReleaseDate());
-        newGame.setCoverArtLink(addGameRequest.getCoverArt());
+        newGame.setTitle(createGameRequest.getTitle());
+        newGame.setDescription(createGameRequest.getDescription());
+        newGame.setGenre(createGameRequest.getGenre());
+        newGame.setRating(createGameRequest.getRating());
+        newGame.setPlatform(createGameRequest.getPlatform());
+        newGame.setReleaseDate(createGameRequest.getReleaseDate());
+        newGame.setCoverArtLink(createGameRequest.getCoverArt());
         newGame.setUuid(UUID.randomUUID().toString().replace("-", ""));
 
         return repository.save(newGame);

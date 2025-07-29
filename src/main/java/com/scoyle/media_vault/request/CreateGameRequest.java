@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddGameRequest {
+public class CreateGameRequest {
 
     private String title;
 
