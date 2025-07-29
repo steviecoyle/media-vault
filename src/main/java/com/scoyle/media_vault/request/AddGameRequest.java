@@ -23,4 +23,6 @@ public class AddGameRequest {
     private String description;
     private double rating;
     private String coverArt;
+    private Long publisherId;
+    private Long developerId;
 }
