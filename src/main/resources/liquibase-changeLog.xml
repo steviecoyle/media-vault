@@ -79,4 +79,12 @@
         </createIndex>
     </changeSet>
 
+    <changeSet id="add column to Publishers" author="Stephen">
+        <addColumn tableName="Publishers">
+            <column type="TIMESTAMP" name="lastUpdated" defaultValueDate="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

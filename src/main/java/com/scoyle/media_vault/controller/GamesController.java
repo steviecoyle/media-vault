@@ -1,6 +1,7 @@
 package com.scoyle.media_vault.controller;
 
 import com.scoyle.media_vault.persistence.entity.GameEntity;
+import com.scoyle.media_vault.request.AddGameRequest;
 import com.scoyle.media_vault.request.UpdateGameRequest;
 import com.scoyle.media_vault.response.PagedResponse;
 import com.scoyle.media_vault.service.GamesService;
@@ -42,6 +43,13 @@ public class GamesController {
         log.info("GET /games/{uuid}");
 
         return new ResponseEntity<>(gameService.getGameByUuid(uuid), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<GameEntity> createGame(@RequestBody AddGameRequest addGameRequest) {
+        log.info("POST /games");
+
+        return new ResponseEntity<>(gameService.createGame(addGameRequest), HttpStatus.OK);
     }
 
     @PutMapping("/{uuid}")
