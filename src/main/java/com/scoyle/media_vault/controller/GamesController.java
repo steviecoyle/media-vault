@@ -5,6 +5,7 @@ import com.scoyle.media_vault.request.CreateGameRequest;
 import com.scoyle.media_vault.request.UpdateGameRequest;
 import com.scoyle.media_vault.response.PagedResponse;
 import com.scoyle.media_vault.service.GamesService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -46,7 +47,7 @@ public class GamesController {
     }
 
     @PostMapping
-    public ResponseEntity<GameEntity> createGame(@RequestBody CreateGameRequest createGameRequest) {
+    public ResponseEntity<GameEntity> createGame(@Valid @RequestBody CreateGameRequest createGameRequest) {
         log.info("POST /games");
 
         return new ResponseEntity<>(gameService.createGame(createGameRequest), HttpStatus.OK);
