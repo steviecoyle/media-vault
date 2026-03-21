@@ -1,6 +1,5 @@
 package com.scoyle.media_vault.controller;
 
-import com.scoyle.media_vault.persistence.entity.GameEntity;
 import com.scoyle.media_vault.persistence.entity.PublishersEntity;
 import com.scoyle.media_vault.request.CreatePublisherRequest;
 import com.scoyle.media_vault.request.UpdatePublisherRequest;
@@ -37,7 +36,8 @@ public class PublisherController {
 
         Page<PublishersEntity> pagedPublishers = service.getAllPublishers(pageable);
 
-        return new ResponseEntity<>(new PagedResponse(pagedPublishers.getTotalElements(), size, page, pagedPublishers.getContent()), HttpStatus.OK);
+        return new ResponseEntity<>(new PagedResponse(pagedPublishers.getTotalElements(), size, page,
+                pagedPublishers.getContent()), HttpStatus.OK);
     }
 
     @PostMapping
