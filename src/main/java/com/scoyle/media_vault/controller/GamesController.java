@@ -36,7 +36,8 @@ public class GamesController {
 
         Page<GameEntity> pagedGames = gameService.getAllGames(pageable);
 
-        return new ResponseEntity<>(new PagedResponse(pagedGames.getTotalElements(), size, page, pagedGames.getContent()), HttpStatus.OK);
+        return new ResponseEntity<>(new PagedResponse(pagedGames.getTotalElements(), size, pagedGames.getNumber() + 1,
+                pagedGames.getContent()), HttpStatus.OK);
     }
 
     @GetMapping("/{uuid}")

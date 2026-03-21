@@ -36,8 +36,8 @@ public class PublisherController {
 
         Page<PublishersEntity> pagedPublishers = service.getAllPublishers(pageable);
 
-        return new ResponseEntity<>(new PagedResponse(pagedPublishers.getTotalElements(), size, page,
-                pagedPublishers.getContent()), HttpStatus.OK);
+        return new ResponseEntity<>(new PagedResponse(pagedPublishers.getTotalElements(), size,
+                pagedPublishers.getNumber() + 1, pagedPublishers.getContent()), HttpStatus.OK);
     }
 
     @PostMapping
