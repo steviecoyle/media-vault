@@ -12,6 +12,7 @@ import lombok.Setter;
 public class PagedResponse {
 
     private long totalRecords;
+    private long totalPages;
     private int pageSize;
     private int page;
     private Object results;
