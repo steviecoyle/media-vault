@@ -25,7 +25,7 @@ public class PublisherController {
     private final PublisherService service;
 
     @GetMapping
-    public ResponseEntity<PagedResponse> getAllPublishers(
+    public PagedResponse getAllPublishers(
             @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
             @RequestParam(name = "size", defaultValue = "20", required = false) Integer size,
             @RequestParam(name = "sortBy", defaultValue = "name", required = false) String sortBy) {
@@ -36,8 +36,8 @@ public class PublisherController {
 
         Page<PublishersEntity> pagedPublishers = service.getAllPublishers(pageable);
 
-        return new ResponseEntity<>(new PagedResponse(pagedPublishers.getTotalElements(), size,
-                pagedPublishers.getNumber() + 1, pagedPublishers.getContent()), HttpStatus.OK);
+        return new PagedResponse(pagedPublishers.getTotalElements(), size, pagedPublishers.getTotalPages(),
+                pagedPublishers.getNumber() + 1, pagedPublishers.getContent());
     }
 
     @PostMapping
@@ -48,11 +48,11 @@ public class PublisherController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<PublishersEntity> updatePublisher(
+    public PublishersEntity updatePublisher(
             @PathVariable String id,
             @RequestBody UpdatePublisherRequest updatePublisherRequest) {
         log.info("PUT /publishers");
 
-        return new ResponseEntity<>(service.updatePublisher(id, updatePublisherRequest), HttpStatus.OK);
+        return service.updatePublisher(id, updatePublisherRequest);
     }
 }
