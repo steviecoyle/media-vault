@@ -1,16 +1,28 @@
 package com.scoyle.media_vault.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.Map;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class ErrorDetails {
-    private Date timestamp;
+
+    private LocalDateTime timestamp;
+    private int status;
+    private String error;
     private String message;
-    private String details;
+    private String path;
+    private Map<String, String> validationErrors; // Only populated for validation failures
+
+    public ErrorDetails(HttpStatus status, String message, String path) {
+        this.timestamp = LocalDateTime.now();
+        this.status = status.value();
+        this.error = status.getReasonPhrase();
+        this.message = message;
+        this.path = path;
+    }
 }
