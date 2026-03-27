@@ -8,14 +8,15 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @Getter
-@Setter
 public class ErrorDetails {
 
-    private LocalDateTime timestamp;
-    private int status;
-    private String error;
-    private String message;
-    private String path;
+    private final LocalDateTime timestamp;
+    private final int status;
+    private final String error;
+    private final String message;
+    private final String path;
+
+    @Setter
     private Map<String, String> validationErrors; // Only populated for validation failures
 
     public ErrorDetails(HttpStatus status, String message, String path) {
@@ -25,4 +26,5 @@ public class ErrorDetails {
         this.message = message;
         this.path = path;
     }
+
 }
