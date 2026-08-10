@@ -3,7 +3,7 @@ package com.scoyle.media_vault.service.impl;
 import com.scoyle.media_vault.exception.ResourceNotFoundException;
 import com.scoyle.media_vault.persistence.entity.GameEntity;
 import com.scoyle.media_vault.persistence.repository.GamesRepository;
-import com.scoyle.media_vault.request.AddGameRequest;
+import com.scoyle.media_vault.request.CreateGameRequest;
 import com.scoyle.media_vault.request.UpdateGameRequest;
 import com.scoyle.media_vault.service.GamesService;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +24,87 @@ class GamesServiceImpl implements GamesService {
 
     private final GamesRepository repository;
 
+    /**
+     * @param pageable containing size, page number and sort information
+     * @return Paged list
+     */
     @Override
     public Page<GameEntity> getAllGames(Pageable pageable) {
 
         return repository.findAll(pageable);
     }
 
+    /**
+     * @param uuid unique Id used to identify an individual game
+     * @return fetched GameEntity object
+     */
     @Override
     public GameEntity getGameByUuid(final String uuid) {
+
+        return getGameByUuidInternal(uuid);
+    }
+
+    /**
+     * @param createGameRequest containing information of a game to add
+     * @return saved GameEntity object
+     */
+    @Override
+    public GameEntity createGame(CreateGameRequest createGameRequest) {
+        String uuid = "";
+
+        boolean uuidAlreadyExists = true;
+
+        // Repeat until we get a unique UUID
+        while (uuidAlreadyExists) {
+            uuid = UUID.randomUUID().toString().replace("-", "");
+            uuidAlreadyExists = repository.existsByUuid(uuid);
+        }
+
+        GameEntity newGame = new GameEntity();
+        newGame.setTitle(createGameRequest.getTitle());
+        newGame.setDescription(createGameRequest.getDescription());
+        newGame.setGenre(createGameRequest.getGenre());
+        newGame.setRating(createGameRequest.getRating());
+        newGame.setPlatform(createGameRequest.getPlatform());
+        newGame.setReleaseDate(createGameRequest.getReleaseDate());
+        newGame.setCoverArtLink(createGameRequest.getCoverArt());
+        newGame.setUuid(uuid);
+
+        return repository.save(newGame);
+    }
+
+    /**
+     * @param updateGameRequest
+     * @return updated GameEntity object
+     */
+    @Override
+    public GameEntity updateGame(UpdateGameRequest updateGameRequest) {
+        GameEntity game = getGameByUuidInternal(updateGameRequest.getUuid());
+
+        // TODO handle call to fetch publisher and developer
+
+        game.setDescription(updateGameRequest.getDescription());
+        game.setCoverArtLink(updateGameRequest.getCoverArt());
+        game.setTitle(updateGameRequest.getTitle());
+        game.setGenre(updateGameRequest.getGenre());
+        game.setRating(updateGameRequest.getRating());
+        game.setReleaseDate(updateGameRequest.getReleaseDate());
+
+        return repository.save(game);
+    }
+
+    /**
+     * @param uuid unique Id used to identify an individual game
+     */
+    @Override
+    public void deleteGame(final String uuid) {
+        GameEntity game = getGameByUuidInternal(uuid);
+
+        log.info("Deleting Game with UUID of [{}]", uuid);
+        repository.delete(game);
+    }
+
+    private GameEntity getGameByUuidInternal(final String uuid) {
         Optional<GameEntity> optionalGame = repository.findGameByUuid(uuid);
 
         if (optionalGame.isPresent()) {
@@ -39,55 +112,6 @@ class GamesServiceImpl implements GamesService {
         } else {
             log.error(NO_GAME_BY_UUID_ERROR_MESSAGE);
             throw new ResourceNotFoundException("Game with UUID of [" + uuid + "] not found.");
-        }
-    }
-
-    @Override
-    public GameEntity createGame(AddGameRequest addGameRequest) {
-        GameEntity newGame = new GameEntity();
-        newGame.setTitle(addGameRequest.getTitle());
-        newGame.setDescription(addGameRequest.getDescription());
-        newGame.setGenre(addGameRequest.getGenre());
-        newGame.setRating(addGameRequest.getRating());
-        newGame.setPlatform(addGameRequest.getPlatform());
-        newGame.setReleaseDate(addGameRequest.getReleaseDate());
-        newGame.setCoverArtLink(addGameRequest.getCoverArt());
-        newGame.setUuid(UUID.randomUUID().toString().replace("-", ""));
-
-        return repository.save(newGame);
-    }
-
-    @Override
-    public GameEntity updateGame(UpdateGameRequest updateGameRequest) {
-        Optional<GameEntity> optionalGame = repository.findGameByUuid(updateGameRequest.getUuid());
-
-        if (optionalGame.isPresent()) {
-            // TODO handle call to fetch publisher and developer
-            GameEntity gameEntity = new GameEntity();
-            gameEntity.setDescription(updateGameRequest.getDescription());
-            gameEntity.setCoverArtLink(updateGameRequest.getCoverArt());
-            gameEntity.setTitle(updateGameRequest.getTitle());
-            gameEntity.setGenre(updateGameRequest.getGenre());
-            gameEntity.setRating(updateGameRequest.getRating());
-            gameEntity.setReleaseDate(updateGameRequest.getReleaseDate());
-
-            return repository.save(gameEntity);
-        } else {
-            log.error(NO_GAME_BY_UUID_ERROR_MESSAGE);
-            throw new ResourceNotFoundException("Game with id of [" + "] not found.");
-        }
-    }
-
-    @Override
-    public void deleteGame(final String uuid) {
-        Optional<GameEntity> optionalGame = repository.findGameByUuid(uuid);
-
-        if (optionalGame.isPresent()) {
-            log.info("Deleting Game with UUID of [{}]", uuid);
-            repository.delete(optionalGame.get());
-        } else {
-            log.error(NO_GAME_BY_UUID_ERROR_MESSAGE);
-            throw new ResourceNotFoundException("Game with id of [" + "] not found.");
         }
     }
 }

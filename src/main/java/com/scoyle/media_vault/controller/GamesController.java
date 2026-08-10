@@ -1,10 +1,11 @@
 package com.scoyle.media_vault.controller;
 
 import com.scoyle.media_vault.persistence.entity.GameEntity;
-import com.scoyle.media_vault.request.AddGameRequest;
+import com.scoyle.media_vault.request.CreateGameRequest;
 import com.scoyle.media_vault.request.UpdateGameRequest;
 import com.scoyle.media_vault.response.PagedResponse;
 import com.scoyle.media_vault.service.GamesService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -24,7 +25,7 @@ public class GamesController {
     private final GamesService gameService;
 
     @GetMapping
-    public ResponseEntity<PagedResponse> getAllGames(
+    public PagedResponse getAllGames(
             @RequestParam(name = "page", defaultValue = "0", required = false) Integer page,
             @RequestParam(name = "size", defaultValue = "20", required = false) Integer size,
             @RequestParam(name = "sortBy", defaultValue = "title",required = false) String sortBy) {
@@ -35,28 +36,29 @@ public class GamesController {
 
         Page<GameEntity> pagedGames = gameService.getAllGames(pageable);
 
-        return new ResponseEntity<>(new PagedResponse(pagedGames.getTotalElements(), size, page, pagedGames.getContent()), HttpStatus.OK);
+        return new PagedResponse(pagedGames.getTotalElements(), pagedGames.getTotalPages(), size,
+                pagedGames.getNumber() + 1, pagedGames.getContent());
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<GameEntity> getGameByUuid(@PathVariable String uuid) {
+    public GameEntity getGameByUuid(@PathVariable String uuid) {
         log.info("GET /games/{uuid}");
 
-        return new ResponseEntity<>(gameService.getGameByUuid(uuid), HttpStatus.OK);
+        return gameService.getGameByUuid(uuid);
     }
 
     @PostMapping
-    public ResponseEntity<GameEntity> createGame(@RequestBody AddGameRequest addGameRequest) {
+    public GameEntity createGame(@Valid @RequestBody CreateGameRequest createGameRequest) {
         log.info("POST /games");
 
-        return new ResponseEntity<>(gameService.createGame(addGameRequest), HttpStatus.OK);
+        return gameService.createGame(createGameRequest);
     }
 
     @PutMapping("/{uuid}")
-    public ResponseEntity<GameEntity> updateGameByUuid(@PathVariable String uuid, @RequestBody UpdateGameRequest game) {
+    public GameEntity updateGameByUuid(@PathVariable String uuid, @RequestBody UpdateGameRequest game) {
         log.info("PUT /games/{uuid}");
 
-        return new ResponseEntity<>(gameService.updateGame(game), HttpStatus.OK);
+        return gameService.updateGame(game);
     }
 
     @DeleteMapping("/{uuid}")
